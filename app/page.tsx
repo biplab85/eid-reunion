@@ -56,6 +56,8 @@ const I = {
   fb: (p: any) => (<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12Z"/></svg>),
   star: (p: any) => (<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" {...p}><path d="m12 2 2.4 6.9H22l-6 4.4 2.3 7-6.3-4.4L5.7 20 8 13.3 2 8.9h7.6Z"/></svg>),
   moon: (p: any) => (<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M21 13a8.5 8.5 0 1 1-9.9-9.8A7 7 0 1 0 21 13Z"/></svg>),
+  list: (p: any) => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" {...p}><path d="M8 6h13M8 12h13M8 18h13" strokeLinecap="round"/><circle cx="3.6" cy="6" r="1.3" fill="currentColor" stroke="none"/><circle cx="3.6" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="3.6" cy="18" r="1.3" fill="currentColor" stroke="none"/></svg>),
+  grid: (p: any) => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" {...p}><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/></svg>),
 };
 
 export default function Page() {
@@ -66,6 +68,7 @@ export default function Page() {
   const [reminder, setReminder] = useState(false);
   const [splash, setSplash] = useState(true);
   const [splashOut, setSplashOut] = useState(false);
+  const [schedView, setSchedView] = useState<"list" | "table">("list");
 
   // premium intro splash: shows on load, auto-closes after 5s
   useEffect(() => {
@@ -98,7 +101,7 @@ export default function Page() {
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, []);
+  }, [schedView]); // re-observe when schedule view toggles so new content reveals
 
   // lightbox keyboard nav
   const move = useCallback((d: number) => setLb((p) => (p === null ? p : (p + d + GALLERY.length) % GALLERY.length)), []);
@@ -258,44 +261,59 @@ export default function Page() {
             <h2 className="section-title">সারাদিনের আয়োজন</h2>
             <p className="section-sub">সকাল থেকে রাত — হাসি, খেলা আর স্মৃতিতে ভরা একটি পূর্ণ দিন।</p>
           </div>
-          <div className="timeline">
-            {SCHEDULE.map((s, i) => (
-              <div className="tl-row reveal" key={i}>
-                <div className="tl-time latin">{s.time}<br /><span className="badge">{s.period}</span></div>
-                <span className="tl-dot" />
-                <div className="tl-card">
-                  <span className="tl-emoji">{s.emoji}</span>
-                  <div><b>{s.title}</b></div>
-                </div>
-              </div>
-            ))}
+          {/* view toggle — list (default) / table */}
+          <div className="sch-toggle reveal" role="tablist" aria-label="সূচি ভিউ">
+            <button
+              type="button" role="tab" aria-selected={schedView === "list"}
+              className={schedView === "list" ? "active" : ""}
+              onClick={() => setSchedView("list")}
+            >
+              <I.list /> তালিকা ভিউ
+            </button>
+            <button
+              type="button" role="tab" aria-selected={schedView === "table"}
+              className={schedView === "table" ? "active" : ""}
+              onClick={() => setSchedView("table")}
+            >
+              <I.grid /> টেবিল ভিউ
+            </button>
           </div>
 
-          {/* table view — same schedule, at-a-glance grid */}
-          <div className="sch-table-head reveal">
-            <span className="eyebrow">টেবিল আকারে</span>
-            <h3 className="sch-table-title">এক নজরে সম্পূর্ণ সূচি</h3>
-          </div>
-          <div className="sch-table-wrap reveal">
-            <table className="sch-table">
-              <thead>
-                <tr>
-                  <th>সময়</th>
-                  <th>পর্ব</th>
-                  <th>আয়োজন</th>
-                </tr>
-              </thead>
-              <tbody>
-                {SCHEDULE.map((s, i) => (
-                  <tr key={i}>
-                    <td className="st-time latin">{s.time}</td>
-                    <td><span className="st-period">{s.period}</span></td>
-                    <td className="st-event"><span className="st-emoji">{s.emoji}</span>{s.title}</td>
+          {schedView === "list" ? (
+            <div className="timeline">
+              {SCHEDULE.map((s, i) => (
+                <div className="tl-row reveal" key={i}>
+                  <div className="tl-time latin">{s.time}<br /><span className="badge">{s.period}</span></div>
+                  <span className="tl-dot" />
+                  <div className="tl-card">
+                    <span className="tl-emoji">{s.emoji}</span>
+                    <div><b>{s.title}</b></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="sch-table-wrap reveal">
+              <table className="sch-table">
+                <thead>
+                  <tr>
+                    <th>সময়</th>
+                    <th>পর্ব</th>
+                    <th>আয়োজন</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {SCHEDULE.map((s, i) => (
+                    <tr key={i}>
+                      <td className="st-time latin">{s.time}</td>
+                      <td><span className="st-period">{s.period}</span></td>
+                      <td className="st-event"><span className="st-emoji">{s.emoji}</span>{s.title}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </section>
 
