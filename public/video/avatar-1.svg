@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="আয়োজক অ্যাভাটার">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#13503b"/>
+      <stop offset="0.55" stop-color="#0a261c"/>
+      <stop offset="1" stop-color="#06140f"/>
+    </linearGradient>
+    <linearGradient id="gold1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0dca2"/>
+      <stop offset="0.5" stop-color="#c9a24b"/>
+      <stop offset="1" stop-color="#9a7a2e"/>
+    </linearGradient>
+    <radialGradient id="halo1" cx="0.5" cy="0.4" r="0.55">
+      <stop offset="0" stop-color="#1c6e52" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#1c6e52" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots1" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="1.5" fill="#c9a24b" opacity="0.16"/>
+    </pattern>
+    <clipPath id="clip1"><circle cx="400" cy="238" r="72"/></clipPath>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#bg1)"/>
+  <rect width="800" height="500" fill="url(#dots1)"/>
+  <rect width="800" height="500" fill="url(#halo1)"/>
+
+  <!-- corner flourishes -->
+  <g stroke="url(#gold1)" stroke-width="2" fill="none" opacity="0.55">
+    <path d="M44 70 q0 -24 24 -24 l46 0"/>
+    <path d="M756 70 q0 -24 -24 -24 l-46 0"/>
+    <path d="M44 430 q0 24 24 24 l46 0"/>
+    <path d="M756 430 q0 24 -24 24 l-46 0"/>
+  </g>
+
+  <!-- crescent + star -->
+  <g transform="translate(400 96)">
+    <path d="M0 -24 a24 24 0 1 0 16 41 a19 19 0 1 1 -16 -41 z" fill="url(#gold1)"/>
+    <path d="M34 -10 l3 8 l8 0 l-6 5 l2 8 l-7 -5 l-7 5 l2 -8 l-6 -5 l8 0 z" fill="url(#gold1)" opacity="0.85"/>
+  </g>
+
+  <!-- avatar ring -->
+  <circle cx="400" cy="238" r="84" fill="none" stroke="url(#gold1)" stroke-width="5"/>
+  <circle cx="400" cy="238" r="72" fill="#091c15"/>
+
+  <!-- silhouette -->
+  <g clip-path="url(#clip1)">
+    <circle cx="400" cy="220" r="29" fill="url(#gold1)"/>
+    <path d="M344 322 a56 56 0 0 1 112 0 z" fill="url(#gold1)"/>
+  </g>
+
+  <!-- mic badge -->
+  <g transform="translate(400 322)">
+    <circle r="19" fill="url(#gold1)" stroke="#091c15" stroke-width="3"/>
+    <rect x="-5" y="-9" width="10" height="15" rx="5" fill="#091c15"/>
+    <path d="M-9 -1 a9 9 0 0 0 18 0" fill="none" stroke="#091c15" stroke-width="2.4"/>
+    <rect x="-1.4" y="8" width="2.8" height="5" fill="#091c15"/>
+  </g>
+</svg>
