@@ -40,8 +40,8 @@ const TEACHERS = [
 const GALLERY = Array.from({ length: 59 }, (_, i) => `/gallery/${i + 1}.jpeg`);
 
 const VIDEOS = [
-  { src: "/video/promo.mp4", poster: "/video/avatar-1.svg", title: "আয়োজকের আমন্ত্রণ বার্তা", note: "সরাসরি বিদ্যালয় প্রাঙ্গণ থেকে", len: "০:৫৮" },
-  { src: "/video/message.mp4", poster: "/video/avatar-2.svg", title: "শুভেচ্ছা বার্তা", note: "প্রিয় মুখের আন্তরিক আমন্ত্রণ", len: "০:৩৭" },
+  { src: "/video/promo.mp4", poster: "/video/promo-poster.jpg", title: "আয়োজকের আমন্ত্রণ বার্তা", note: "সরাসরি বিদ্যালয় প্রাঙ্গণ থেকে", len: "০:৫৮" },
+  { src: "/video/message.mp4", poster: "/video/message-poster.jpg", title: "শুভেচ্ছা বার্তা", note: "প্রিয় মুখের আন্তরিক আমন্ত্রণ", len: "০:৩৭" },
 ];
 
 const FORM_URL = "https://forms.gle/X5yZqpNDj9sUWo99";
