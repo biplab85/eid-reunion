@@ -64,6 +64,22 @@ export default function Page() {
   const [lb, setLb] = useState<number | null>(null);
   const [vid, setVid] = useState<(typeof VIDEOS)[number] | null>(null);
   const [reminder, setReminder] = useState(false);
+  const [splash, setSplash] = useState(true);
+  const [splashOut, setSplashOut] = useState(false);
+
+  // premium intro splash: shows on load, auto-closes after 5s
+  useEffect(() => {
+    if (!splash) return;
+    document.body.style.overflow = "hidden";
+    const tOut = setTimeout(() => setSplashOut(true), 4400);
+    const tEnd = setTimeout(() => setSplash(false), 5000);
+    return () => { clearTimeout(tOut); clearTimeout(tEnd); document.body.style.overflow = ""; };
+  }, [splash]);
+
+  const skipSplash = useCallback(() => {
+    setSplashOut(true);
+    setTimeout(() => setSplash(false), 500);
+  }, []);
 
   // sticky nav state
   useEffect(() => {
@@ -122,6 +138,24 @@ export default function Page() {
 
   return (
     <>
+      {/* ---------------- INTRO SPLASH ---------------- */}
+      {splash && (
+        <div className={`splash ${splashOut ? "out" : ""}`} role="dialog" aria-label="স্বাগতম">
+          <div className="splash-lattice" />
+          <span className="splash-moon"><I.moon /></span>
+          <div className="splash-card">
+            <span className="splash-kicker latin">Dhopadi · Eid Reunion 2026</span>
+            <figure className="splash-frame">
+              <img src="/posters/intro.jpeg" alt="ঈদ পুনর্মিলনী ২০২৬" />
+            </figure>
+            <p className="splash-title">ঈদ পুনর্মিলনী ২০২৬</p>
+            <p className="splash-sub">স্মৃতির টানে, সবাই একসাথে</p>
+            <div className="splash-bar"><span /></div>
+          </div>
+          <button className="splash-skip" onClick={skipSplash}>প্রবেশ করুন →</button>
+        </div>
+      )}
+
       {/* ---------------- NAV ---------------- */}
       <header className={`nav ${scrolled ? "scrolled" : ""}`}>
         <a className="brand" href="#home" onClick={(e) => { e.preventDefault(); go("home"); }}>
@@ -235,6 +269,32 @@ export default function Page() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* table view — same schedule, at-a-glance grid */}
+          <div className="sch-table-head reveal">
+            <span className="eyebrow">টেবিল আকারে</span>
+            <h3 className="sch-table-title">এক নজরে সম্পূর্ণ সূচি</h3>
+          </div>
+          <div className="sch-table-wrap reveal">
+            <table className="sch-table">
+              <thead>
+                <tr>
+                  <th>সময়</th>
+                  <th>পর্ব</th>
+                  <th>আয়োজন</th>
+                </tr>
+              </thead>
+              <tbody>
+                {SCHEDULE.map((s, i) => (
+                  <tr key={i}>
+                    <td className="st-time latin">{s.time}</td>
+                    <td><span className="st-period">{s.period}</span></td>
+                    <td className="st-event"><span className="st-emoji">{s.emoji}</span>{s.title}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>

@@ -353,6 +353,42 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .tl-time { text-align: left; padding-top: 0; }
 }
 
+// ---- schedule table view (second view, alongside the timeline) ----
+.sch-table-head { text-align: center; margin: clamp(3rem, 6vw, 4.5rem) auto 1.6rem; }
+.sch-table-title {
+  font-family: var(--font-display), serif; font-weight: 700;
+  font-size: clamp(1.5rem, 3.4vw, 2.2rem); color: $cream; margin-top: 0.8rem;
+}
+.sch-table-wrap {
+  max-width: 880px; margin: 0 auto; overflow-x: auto;
+  border-radius: 16px; border: 1px solid rgba(201,162,75,0.22);
+  background: rgba(247,241,225,0.04); box-shadow: var(--shadow-card);
+  -webkit-overflow-scrolling: touch;
+}
+.sch-table {
+  width: 100%; min-width: 460px; border-collapse: collapse;
+  font-size: 0.96rem; color: $cream;
+}
+.sch-table thead th {
+  position: sticky; top: 0;
+  background: linear-gradient(135deg, $gold, $gold-soft);
+  color: $ink; font-family: var(--font-display), serif; font-weight: 700;
+  text-align: left; padding: 0.95rem 1.2rem; letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.sch-table tbody td { padding: 0.85rem 1.2rem; border-top: 1px solid rgba(201,162,75,0.14); vertical-align: middle; }
+.sch-table tbody tr { transition: background 0.25s ease; }
+.sch-table tbody tr:nth-child(even) { background: rgba(247,241,225,0.03); }
+.sch-table tbody tr:hover { background: rgba(201,162,75,0.1); }
+.sch-table .st-time { font-family: var(--font-latin), serif; color: $gold-soft; white-space: nowrap; }
+.sch-table .st-period {
+  display: inline-block; font-size: 0.72rem; letter-spacing: 0.08em;
+  color: $gold-soft; background: rgba(201,162,75,0.14);
+  border: 1px solid rgba(201,162,75,0.3); border-radius: 999px; padding: 0.18rem 0.7rem;
+}
+.sch-table .st-event { font-family: var(--font-display), serif; }
+.sch-table .st-emoji { font-size: 1.15rem; margin-right: 0.6rem; }
+
 // ============================================================
 //  TEACHERS
 // ============================================================
@@ -565,6 +601,71 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   &:hover { background: rgba(247,241,225,0.12); color: $cream; transform: rotate(90deg); }
 }
 
+// ============================================================
+//  INTRO SPLASH (premium loading view)
+// ============================================================
+.splash {
+  position: fixed; inset: 0; z-index: 200;
+  display: grid; place-items: center; padding: 6vw;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 80% -10%, rgba(21,87,65,0.6), transparent 60%),
+    radial-gradient(100% 90% at 50% 120%, rgba(124,45,45,0.3), transparent 55%),
+    linear-gradient(160deg, $emerald-1 0%, $ink 60%, #03100b 100%);
+  animation: fade 0.5s ease;
+}
+.splash.out { animation: splashOut 0.6s cubic-bezier(.5,0,.2,1) forwards; }
+.splash-lattice {
+  position: absolute; inset: 0; opacity: 0.16; pointer-events: none;
+  background-image:
+    linear-gradient(45deg, rgba(201,162,75,0.5) 1px, transparent 1px),
+    linear-gradient(-45deg, rgba(201,162,75,0.5) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(120% 120% at 50% 0%, #000 30%, transparent 80%);
+}
+.splash-moon {
+  position: absolute; top: 8%; left: 50%; transform: translateX(-50%);
+  color: $gold; opacity: 0.5;
+  filter: drop-shadow(0 0 30px rgba(201,162,75,0.6));
+  animation: floaty 7s ease-in-out infinite;
+  svg { width: 46px; height: 46px; }
+}
+.splash-card {
+  position: relative; z-index: 2; text-align: center;
+  width: min(520px, 92vw);
+  animation: vmRise 0.7s cubic-bezier(.16,.84,.27,1);
+}
+.splash-kicker {
+  display: block; font-family: var(--font-latin), serif;
+  letter-spacing: 0.4em; text-transform: uppercase; font-size: 0.74rem;
+  color: $gold-soft; margin-bottom: 1.4rem;
+}
+.splash-frame {
+  position: relative; padding: 12px; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(230,207,148,0.95), rgba(154,122,46,0.55));
+  box-shadow: 0 50px 120px -30px #000, 0 0 0 1px rgba(201,162,75,0.4);
+  &::after { content:""; position:absolute; inset:12px; border:1px solid rgba(255,255,255,0.22); border-radius:12px; pointer-events:none; }
+  img { border-radius: 12px; width: 100%; max-height: 56svh; object-fit: cover; display: block; }
+}
+.splash-title { margin-top: 1.5rem; font-family: var(--font-display), serif; font-weight: 800; font-size: clamp(1.6rem, 5vw, 2.4rem); color: $gold-soft; }
+.splash-sub { margin-top: 0.2rem; font-family: var(--font-display), serif; font-style: italic; color: rgba(247,241,225,0.7); }
+.splash-bar {
+  width: 200px; height: 3px; margin: 1.6rem auto 0; border-radius: 999px;
+  background: rgba(247,241,225,0.14); overflow: hidden;
+  span { display: block; height: 100%; width: 0; border-radius: 999px;
+    background: linear-gradient(90deg, $gold-deep, $gold-soft);
+    animation: splashFill 4.4s linear forwards; }
+}
+.splash-skip {
+  position: absolute; bottom: clamp(1.6rem, 5vh, 3rem); left: 50%; transform: translateX(-50%);
+  z-index: 3; color: $cream; font-weight: 600; font-size: 0.9rem;
+  padding: 0.6rem 1.4rem; border-radius: 999px;
+  border: 1px solid rgba(201,162,75,0.5); background: rgba(6,20,15,0.4);
+  transition: background 0.25s ease, transform 0.25s ease;
+  &:hover { background: rgba(201,162,75,0.16); transform: translateX(-50%) translateY(-2px); }
+}
+@media (max-width: 600px) { .splash-frame img { max-height: 46svh; } }
+
 // ---------- keyframes ----------
 @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 @keyframes scrolldot { 0% { opacity: 0; transform: translate(-50%, 0); } 40% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, 12px); } }
@@ -572,6 +673,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.5); opacity: 0; } }
 @keyframes pulseDot { 0%,100% { box-shadow: 0 0 0 4px rgba(201,162,75,0.2); } 50% { box-shadow: 0 0 0 8px rgba(201,162,75,0.05); } }
 @keyframes vmRise { from { opacity: 0; transform: translateY(40px) scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes splashOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.04); visibility: hidden; } }
+@keyframes splashFill { from { width: 0; } to { width: 100%; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
